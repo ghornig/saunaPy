@@ -6,15 +6,74 @@
 </head>
 <body>
     <h2> Temperature </h2>
-    <p id="count">Current temp: {{ intCount }}</p>
+    <p id="uppertemp">Current temp (upper): {{ intCount }}</p>
+    <p id="lowertemp">Current temp (lower): {{ intCount }}</p>
+    <h2> Humidity </h2>
+    <p id="humidity">Current humidity: {{ intCount }}</p>
+    <h2> C02 </h2>
+    <p id="lowerec02">Current c02: {{ intCount }}</p>
+    <h2> Pressure </h2>
+    <p id="pressure">Current pressure: {{ intCount }}</p>
 
+    <p>
+        <!--onclick is a event that execute some function segment on some click in the element-->
+            <button onclick="turnSaunaOn()" style="height:200px;width:200px"">Turn sauna on</button>
+    </p>
+    <p>
+        <!--onclick is a event that execute some function segment on some click in the element-->
+            <button onclick="toggleLight()" style="height:200px;width:200px"">Toggle outdoor light</button>
+    </p>
     <script>
-        function getStatus(){
-            fetch("/temperature",{
+        function getUpperTemp(){
+            fetch("/uppertemperature",{
             method:"GET"
             }).then((Response) => {
             Response.text().then((value) => {
-                document.getElementById("count").innerText = "Current temp: " + value;
+                document.getElementById("uppertemp").innerText = "Current temp: " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
+        function getLowerTemp(){
+            fetch("/lowertemperature",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("lowertemp").innerText = "Current temp: " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
+        function getLowerHumidity(){
+            fetch("/lowerhumidity",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("humidity").innerText = "Current humidity: " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
+        function getLowereC02(){
+            fetch("/lowerec02",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("lowerec02").innerText = "Current c02: " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
+        function getLowerPressure(){
+            fetch("/lowerpressure",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("pressure").innerText = "Current pressure: " + value;
             }).catch(() => {
                 window.alert("fail on get status");
             })
@@ -22,18 +81,25 @@
         }
 
         // Call getStatus on a 1 second timer
-        setInterval(getStatus, 1000);
-//         //Everything here is a basically copy of the code up here
-//         function sendAddComand(){
-//             fetch("/up/",{
-//                 method : "GET"
-//             }).then((Response) => {
-//                     Response.text().then((text) => {
-//                         document.getElementById("count").innerText =     
-// "Current time: " + text;
-//                 })
-//             })
-//         }
+        setInterval(getUpperTemp, 1000);
+        setInterval(getLowerTemp, 1000);
+        setInterval(getLowerHumidity, 1000);
+        setInterval(getLowereC02, 1000);
+        setInterval(getLowerPressure, 1000);
+
+
+        function turnSaunaOn(){
+            fetch("/activatesauna/",{
+                method : "GET"
+            }).then((Response) => {                    
+            })
+        }
+        function toggleLight(){
+            fetch("/toggleoutdoorlight/",{
+                method : "GET"
+            }).then((Response) => {                    
+            })
+        }
     </script>
 </body>
 </html>

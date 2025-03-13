@@ -1,9 +1,10 @@
 from flask import Flask, render_template, Response
+from app import app, socketio
 import time
-from app import app
 import random
 
-# app = Flask(__name__)
+cache = {}
+# https://stackoverflow.com/questions/70796161/countdown-timer-how-to-update-variable-in-python-flask-with-html
 
 @app.route('/content') # render the content a url differnt from index. This will be streamed into the iframe
 def content():
@@ -13,14 +14,48 @@ def content():
             yield str(i)
     return Response(timer(10), mimetype='text/html') #at the moment the time value is hardcoded in the function just for simplicity
 
-@app.get("/temperature/")
-def temp():
+@app.get("/lowertemperature/")
+def lowertemp():
     tempval = random.uniform(20, 30)
-
-    #Do anything here...
-    #Here i'm returning the current value of count, so you can get
-    #It in you web site
     return str(tempval)
+
+@app.get("/uppertemperature/")
+def uppertemp():
+    tempval = random.uniform(20, 30)
+    return str(tempval)
+
+@app.get("/lowerhumidity/")
+def lowerhumidity():
+    humval = random.uniform(0, 100)
+    return str(humval)
+
+@app.get("/lowerec02/")
+def lowerec02():
+    ec02val = random.uniform(0, 100)
+    return str(ec02val)
+
+@app.get("/lowerpressure/")
+def lowerpressure():
+    pressureval = random.uniform(0, 100)
+    return str(pressureval)
+
+@app.get("/activatesauna/")
+def activatesauna():
+    print("sauna activated")
+    return ""
+
+@app.get("/toggleoutdoorlight/")
+def togglelight():
+    lightOn = not lightOn
+    if lightOn:
+        print("outdoor light turned off")
+    else:
+        print("outdoor light turned on")
+    return ""
+
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + data['foo'])
 
 @app.route('/')
 @app.route('/index')
