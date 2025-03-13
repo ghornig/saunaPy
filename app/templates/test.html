@@ -6,6 +6,7 @@
 </head>
 <body>
     <h2> Temperature </h2>
+    <p id="cputemp">Current temp (cpu): {{ intCount }}</p>
     <p id="uppertemp">Current temp (upper): {{ intCount }}</p>
     <p id="lowertemp">Current temp (lower): {{ intCount }}</p>
     <h2> Humidity </h2>
@@ -26,12 +27,23 @@
             <button onclick="toggleLight()" style="height:200px;width:200px"">Toggle outdoor light</button>
     </p>
     <script>
+        function getCPUTemp(){
+            fetch("/cputemperature",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("cputemp").innerText = "Current temp (cpu): " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
         function getUpperTemp(){
             fetch("/uppertemperature",{
             method:"GET"
             }).then((Response) => {
             Response.text().then((value) => {
-                document.getElementById("uppertemp").innerText = "Current temp: " + value;
+                document.getElementById("uppertemp").innerText = "Current temp (upper): " + value;
             }).catch(() => {
                 window.alert("fail on get status");
             })
@@ -42,7 +54,7 @@
             method:"GET"
             }).then((Response) => {
             Response.text().then((value) => {
-                document.getElementById("lowertemp").innerText = "Current temp: " + value;
+                document.getElementById("lowertemp").innerText = "Current temp (lower): " + value;
             }).catch(() => {
                 window.alert("fail on get status");
             })
@@ -83,6 +95,7 @@
         }
 
         // Call getStatus on a 1 second timer
+        setInterval(getCPUTemp, 1000);
         setInterval(getUpperTemp, 1000);
         setInterval(getLowerTemp, 1000);
         setInterval(getLowerHumidity, 1000);

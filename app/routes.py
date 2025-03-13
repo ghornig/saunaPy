@@ -4,6 +4,19 @@ import time
 import random
 import threading
 
+import re, subprocess
+ 
+def check_CPU_temp():
+    temp = None
+    err, msg = subprocess.getstatusoutput('vcgencmd measure_temp')
+    if not err:
+        m = re.search(r'-?\d\.?\d*', msg)   # a solution with a  regex
+        try:
+            temp = float(m.group())
+        except ValueError: # catch only error needed
+            pass
+    return temp
+
 lowertemp = 0
 uppertemp = 0
 hum = 0
@@ -30,6 +43,10 @@ def updateVals():
 t1 = threading.Thread(target=updateVals)
 t1.daemon = True
 t1.start()
+
+@app.get("/cputemperature/")
+def cputemp():
+    return str(check_CPU_temp())
 
 @app.get("/lowertemperature/")
 def lowertemp():
