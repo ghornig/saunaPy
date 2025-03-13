@@ -96,7 +96,7 @@ def handle_message(data):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('bootstrap.html') # render a template at the index. The content will be embedded in this template
+    return render_template('index.html') # render a template at the index. The content will be embedded in this template
 
 # if __name__ == '__main__':
 #     app.run(use_reloader=False)
