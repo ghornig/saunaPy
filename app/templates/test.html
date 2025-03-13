@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <h2> Temperature </h2>
+    <p id="count">Current temp: {{ intCount }}</p>
+
+    <script>
+        function getStatus(){
+            fetch("/temperature",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("count").innerText = "Current temp: " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
+            })
+        }
+
+        // Call getStatus on a 1 second timer
+        setInterval(getStatus, 1000);
+//         //Everything here is a basically copy of the code up here
+//         function sendAddComand(){
+//             fetch("/up/",{
+//                 method : "GET"
+//             }).then((Response) => {
+//                     Response.text().then((text) => {
+//                         document.getElementById("count").innerText =     
+// "Current time: " + text;
+//                 })
+//             })
+//         }
+    </script>
+</body>
+</html>
