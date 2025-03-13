@@ -32,3 +32,26 @@ server {
 under 
 
 /etc/nginx/sites-enabled/default
+
+Now add gunicorn as a service so it starts up
+
+Create sudo nano /etc/systemd/system/gunicorn.service
+
+```
+[Unit]
+Description=Gunicorn instance to serve app
+After=network.target
+
+[Service]
+User=gjh
+Group=gjh
+ProtectHome=false
+WorkingDirectory=/home/gjh/repos/saunaPy
+ExecStart=/home/gjh/repos/saunaPy/venv/bin/gunicorn --bind 0.0.0.0:8000 app:app
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Now install the service: sudo systemctl enable gunicorn.service
+
