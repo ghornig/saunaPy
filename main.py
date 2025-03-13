@@ -1,1 +1,1 @@
-# Hi
+from app import app
