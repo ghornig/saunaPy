@@ -2,42 +2,59 @@ from flask import Flask, render_template, Response
 from app import app, socketio
 import time
 import random
+import threading
 
-cache = {}
+lowertemp = 0
+uppertemp = 0
+hum = 0
+ec02 = 0
+pressure = 0
+lightOn = False
 # https://stackoverflow.com/questions/70796161/countdown-timer-how-to-update-variable-in-python-flask-with-html
 
-@app.route('/content') # render the content a url differnt from index. This will be streamed into the iframe
-def content():
-    def timer(t):
-        for i in range(t):
-            time.sleep(1) #put 60 here if you want to have seconds
-            yield str(i)
-    return Response(timer(10), mimetype='text/html') #at the moment the time value is hardcoded in the function just for simplicity
+def updateVals():
+    while True:
+        global lowertemp, uppertemp, hum, ec02, pressure
+        uppertemp = random.uniform(20, 30)
+        lowertemp = random.uniform(0, 100)
+        hum = random.uniform(0, 100)
+        ec02 = random.uniform(0, 100)
+        pressure = random.uniform(0, 100)
+        print("upper temp: " + str(uppertemp))
+        print("lower temp: " + str(lowertemp))
+        print("humidity: " + str(hum))
+        print("ec02: " + str(ec02))
+        print("pressure: " + str(pressure))        
+        time.sleep(1)
+
+t1 = threading.Thread(target=updateVals)
+t1.daemon = True
+t1.start()
 
 @app.get("/lowertemperature/")
 def lowertemp():
-    tempval = random.uniform(20, 30)
-    return str(tempval)
+    global lowertemp
+    return str(lowertemp)
 
 @app.get("/uppertemperature/")
 def uppertemp():
-    tempval = random.uniform(20, 30)
-    return str(tempval)
+    global uppertemp
+    return str(uppertemp)
 
 @app.get("/lowerhumidity/")
 def lowerhumidity():
-    humval = random.uniform(0, 100)
-    return str(humval)
+    global hum
+    return str(hum)
 
 @app.get("/lowerec02/")
 def lowerec02():
-    ec02val = random.uniform(0, 100)
-    return str(ec02val)
+    global ec02
+    return str(ec02)
 
 @app.get("/lowerpressure/")
 def lowerpressure():
-    pressureval = random.uniform(0, 100)
-    return str(pressureval)
+    global pressure
+    return str(pressure)
 
 @app.get("/activatesauna/")
 def activatesauna():
@@ -46,13 +63,15 @@ def activatesauna():
 
 @app.get("/toggleoutdoorlight/")
 def togglelight():
+    global lightOn
     lightOn = not lightOn
     if lightOn:
         print("outdoor light turned off")
     else:
         print("outdoor light turned on")
-    return ""
+    return str(lightOn)
 
+# https://flask-socketio.readthedocs.io/en/latest/getting_started.html#receiving-messages
 @socketio.on('message')
 def handle_message(data):
     print('received message: ' + data['foo'])

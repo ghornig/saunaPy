@@ -14,6 +14,8 @@
     <p id="lowerec02">Current c02: {{ intCount }}</p>
     <h2> Pressure </h2>
     <p id="pressure">Current pressure: {{ intCount }}</p>
+    <h2> Light </h2>
+    <p id="light">Current light status: {{ intCount }}</p>
 
     <p>
         <!--onclick is a event that execute some function segment on some click in the element-->
@@ -95,11 +97,17 @@
             })
         }
         function toggleLight(){
-            fetch("/toggleoutdoorlight/",{
-                method : "GET"
-            }).then((Response) => {                    
+            fetch("/toggleoutdoorlight",{
+            method:"GET"
+            }).then((Response) => {
+            Response.text().then((value) => {
+                document.getElementById("light").innerText = "light status " + value;
+            }).catch(() => {
+                window.alert("fail on get status");
+            })
             })
         }
+    
     </script>
 </body>
 </html>
