@@ -41,6 +41,7 @@ Create sudo nano /etc/systemd/system/gunicorn.service
 [Unit]
 Description=Gunicorn instance to serve app
 After=network.target
+Requires=nginx.service
 
 [Service]
 User=gjh
