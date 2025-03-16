@@ -10,7 +10,7 @@
     <title>Starter Template · Bootstrap v5.3</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/starter-template/">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -165,87 +165,250 @@
   <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
     <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-4">Starter template</span>
+      <span class="fs-4">Sauna Pi</span>
     </a>
   </header>
 
   <main>
-    <h1 class="text-body-emphasis">Get started with Bootstrap</h1>
-    <p class="fs-5 col-md-8">Quickly and easily get started with Bootstrap's compiled, production-ready files with this barebones example featuring some basic HTML and helpful links. Download all our examples to get started.</p>
 
-    <div class="mb-5">
-      <a href="../examples/" class="btn btn-primary btn-lg px-4">Download examples</a>
-    </div>
+    <div class="row d-flex justify-content-center py-5">
+      <div class="col-md-8 col-lg-6 col-xl-5">
+    
+        <div class="card text-body" style=" border-radius: 35px;">
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <h6 class="flex-grow-1">Temperature</h6>
+              <h6></h6>
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold"> 13°C </h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+              </div>
+              <span class="small" style="color: #868B94">Upper</span>
+            </div>
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0"> 13°C </h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+              </div>
+              <span class="small" style="color: #868B94">Lower</span>
+            </div>            
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0"> 13°C </h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+              </div>
+              <span class="small" style="color: #868B94">CPU</span>
+            </div>   
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-thermometer-half" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-5">
+    
+        <div class="card text-body" style=" border-radius: 35px;">
+          <button type="button" class="btn">
 
-    <hr class="col-3 col-md-2 mb-5">
-
-    <div class="row g-5">
-      <div class="col-md-6">
-        <h2 class="text-body-emphasis">Starter projects</h2>
-        <p>Ready to go beyond the starter template? Check out these open source projects that you can quickly duplicate to a new GitHub repository.</p>
-        <ul class="list-unstyled ps-0">
-          <li>
-            <a class="icon-link mb-1" href="https://github.com/twbs/examples/tree/main/icons-font" rel="noopener" target="_blank">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap npm starter
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="https://github.com/twbs/examples/tree/main/parcel" rel="noopener" target="_blank">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Parcel starter
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="https://github.com/twbs/examples/tree/main/vite" rel="noopener" target="_blank">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Vite starter
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="https://github.com/twbs/examples/tree/main/webpack" rel="noopener" target="_blank">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Webpack starter
-            </a>
-          </li>
-        </ul>
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <h6 class="flex-grow-1">Humidity</h6>
+              <h6>Lower</h6>
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold"> 5 % </h6>
+              <!-- <span class="small" style="color: #868B94">Stormy</span> -->
+            </div>
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-droplet" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+          </button>
+        </div>
+    
       </div>
 
-      <div class="col-md-6">
-        <h2 class="text-body-emphasis">Guides</h2>
-        <p>Read more detailed instructions and documentation on using or contributing to Bootstrap.</p>
-        <ul class="list-unstyled ps-0">
-          <li>
-            <a class="icon-link mb-1" href="../getting-started/introduction/">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap quick start guide
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="../getting-started/webpack/">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Webpack guide
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="../getting-started/parcel/">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Parcel guide
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="../getting-started/vite/">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Bootstrap Vite guide
-            </a>
-          </li>
-          <li>
-            <a class="icon-link mb-1" href="../getting-started/contribute/">
-              <svg class="bi" width="16" height="16"><use xlink:href="#arrow-right-circle"/></svg>
-              Contributing to Bootstrap
-            </a>
-          </li>
-        </ul>
+      <div class="col-md-8 col-lg-6 col-xl-5">
+    
+        
+        <div class="card text-body" style=" border-radius: 35px;">
+          <button type="button" class="btn">
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <!-- <h6 class="flex-grow-1">Pressure</h6> -->
+              <!-- <h6>Lower</h6> -->
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold">Toggle Outdoor Light </h6>
+              <!-- <span class="small" style="color: #868B94">Lower</span> -->
+            </div>
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-lightbulb" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+        </button>
+        </div>
+    
+      </div>
+
+      <div class="col-md-8 col-lg-6 col-xl-5">
+        <button type="button" class="btn">
+        <div class="card text-body" style=" border-radius: 35px;">
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <!-- <h6 class="flex-grow-1">Pressure</h6> -->
+              <!-- <h6>Lower</h6> -->
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold">Press Power Switch</h6>
+              <!-- <span class="small" style="color: #868B94">Lower</span> -->
+            </div>
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-power" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+        </button>
+    
+      </div>
+
+      <div class="col-md-8 col-lg-6 col-xl-5">
+    
+        <div class="card text-body" style=" border-radius: 35px;">
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <h6 class="flex-grow-1">eCO2</h6>
+              <h6>Lower</h6>
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold"> 5 % </h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 5%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">5%</div>
+              </div>
+              <!-- <span class="small" style="color: #868B94">Stormy</span> -->
+            </div>
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-wind" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+      </div>
+
+      <div class="col-md-8 col-lg-6 col-xl-5">
+    
+        <div class="card text-body" style=" border-radius: 35px;">
+          <div class="card-body p-4">
+    
+            <div class="d-flex">
+              <h6 class="flex-grow-1">Pressure</h6>
+              <!-- <h6>Lower</h6> -->
+            </div>
+    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 class="display-4 mb-0 font-weight-bold"> 5 % </h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 5%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">5%</div>
+              </div>
+              <span class="small" style="color: #868B94">Lower</span>
+            </div>
+    
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1" style="font-size: 1rem;">
+                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
+                  </span>
+                </div>
+                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
+                  </span></div>
+                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
+                  </span></div> -->
+              </div>
+              <div>
+                <i class="bi-speedometer" style="font-size: 8em; color: #868B94;"></i>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
       </div>
     </div>
   </main>
