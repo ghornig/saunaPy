@@ -18,6 +18,19 @@ def check_CPU_temp():
             pass
     return temp
 
+def adcToTemp(adcReading):
+    adcMax = 4095
+    voltageMax = 3.3
+    resistance = 12000
+    alpha = 28095 #offset
+    beta = 395 #slope
+    gamma = 128549946
+    delta = -2.48798
+
+    vmeas = (adcReading/adcMax)*voltageMax
+    # return ((resistance /((voltageMax/vmeas) - 1)) - alpha) / beta
+    return math.pow(math.log(((resistance /((voltageMax/vmeas) - 1))) / gamma) / delta, 10)
+    # return vmeas
 lowertemp = 0
 uppertemp = 0
 hum = 0
@@ -26,6 +39,15 @@ pressure = 0
 lightOn = False
 # https://stackoverflow.com/questions/70796161/countdown-timer-how-to-update-variable-in-python-flask-with-html
 
+zipLEDs = KitronikZIPLEDs(autoShow = False)
+
+r = 255
+g = 0
+b = 0
+# Set each pixel to red
+for i in range(3):
+    zipLEDs.setPixel(i, (r, g, b))
+zipLEDs.show()
 
 
 def updateVals():
@@ -37,12 +59,12 @@ def updateVals():
     bme688 = KitronikBME688()
     bme688.calcBaselines(oled) # Takes OLED as input to show progress
 
-    adc0 = KitronikADC(0)
+    adc1 = KitronikADC(1)
 
     while True:
         global lowertemp, uppertemp, hum, ec02, pressure
         bme688.measureData()
-        # uppertemp = float(adc0.read())
+        uppertemp = float(adcToTemp(adc1.read()))
         lowertemp = float(bme688.readTemperature())
         # Update the sensor values
         hum = float(bme688.readHumidity())

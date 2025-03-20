@@ -24,6 +24,15 @@ def displayText(self, text, line, x_offset = 0):
     self.draw.text((x_offset, y), text, font = self.font, fill = 1)
 ```
 
+next, also modify the serial implementation to use the different serial interface on the pi5
+
+line 20:
+```
+        self.ser = serial.Serial('/dev/ttyAMA0', baudrate=115200,
+            parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+            bytesize=serial.EIGHTBITS, timeout=1)
+```
+
 ## To save to the requirements
 
 pip freeze > requirements.txt
