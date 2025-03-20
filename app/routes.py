@@ -43,28 +43,12 @@ def updateVals():
         global lowertemp, uppertemp, hum, ec02, pressure
         bme688.measureData()
         # uppertemp = float(adc0.read())
-        # lowertemp = random.uniform(0, 100)
         lowertemp = float(bme688.readTemperature())
         # Update the sensor values
         hum = float(bme688.readHumidity())
         oled.clear()
         ec02 =  float(bme688.readeCO2())
         pressure = float(bme688.readPressure())
-        # print("Air Quality %:", bme688.getAirQualityPercent())
-        # print("Air Quality Score:", bme688.getAirQualityScore())
-
-        # print("upper temp: " + str(uppertemp))
-        # print("lower temp: " + str(lowertemp))
-        # print("humidity: " + str(hum))
-        # print("ec02: " + str(ec02))
-        # print("pressure: " + str(pressure))        
-        # Read and output the sensor values
-        # print("Temperature:", bme688.readTemperature())
-        # print("Pressure:", bme688.readPressure())
-        # print("Humidity:", bme688.readHumidity())
-        # print("eCO2:", bme688.readeCO2())
-        # print("Air Quality %:", bme688.getAirQualityPercent())
-        # print("Air Quality Score:", bme688.getAirQualityScore())
         oled.clear()
         # Read and output the sensor values to the OLED display
         oled.displayText("Temperature:" + str(bme688.readTemperature()), 1)
