@@ -1,4 +1,34 @@
-To run, first activate the venv:
+## Setting up the HAT
+
+sudo raspi-config
+ 
+and do
+
+3 Interface Options
+I6 Serial Port
+Login shell over serial? No
+Serial port hardware enabled? Yes
+
+pip install KitronikAirQualityControlHAT
+
+### fixup
+
+Modify KiktronikAirQualityControlHAT.py in the library on line 381 as follows: (https://github.com/KitronikLtd/Kitronik-Raspberry-Pi-Air-Quality-Control-HAT-Python/pull/4)
+
+```
+def displayText(self, text, line, x_offset = 0):
+    if line < 1: line = 1
+    if line > 6: line = 6
+    y = (line * 11) - 10
+    (font_width, font_height) = self.font.getbbox(text)[2:4]
+    self.draw.text((x_offset, y), text, font = self.font, fill = 1)
+```
+
+## To save to the requirements
+
+pip freeze > requirements.txt
+
+## To run, first activate the venv:
 
 ./venv/Scripts/activate.ps1
 

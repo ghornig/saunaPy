@@ -479,7 +479,7 @@
            method:"GET"
            }).then((Response) => {
            Response.text().then((value) => {
-               document.getElementById("pressure").innerText = Number(value).toFixed(1) +" kPa";
+               document.getElementById("pressure").innerText = Number(value).toFixed(1)/1000 +" kPa";
            }).catch(() => {
                window.alert("fail on get status");
            })
