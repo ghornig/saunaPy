@@ -39,6 +39,21 @@ pressure = 0
 lightOn = False
 # https://stackoverflow.com/questions/70796161/countdown-timer-how-to-update-variable-in-python-flask-with-html
 
+
+def pushButton():
+    servo = KitronikServo()
+    # push down
+    servo.changePercent(15)
+    servo.start()
+    time.sleep(0.5)
+    servo.stop()
+    time.sleep(1)
+    # push up
+    servo.changePercent(90)
+    servo.start()
+    time.sleep(0.5)
+    servo.stop()
+
 zipLEDs = KitronikZIPLEDs(autoShow = False)
 
 r = 255
@@ -119,6 +134,7 @@ def getlowerpressure():
 @app.get("/activatesauna/")
 def activatesauna():
     print("sauna activated")
+    pushButton()
     return ""
 
 @app.get("/toggleoutdoorlight/")
