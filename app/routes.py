@@ -7,6 +7,15 @@ from KitronikAirQualityControlHAT import *
 
 import re, subprocess
  
+zipLEDs = KitronikZIPLEDs(autoShow = False)
+
+r = 255
+g = 0
+b = 0
+zipLEDs.setPixel(0, (r, g, b))
+zipLEDs.show()
+
+
 def check_CPU_temp():
     temp = None
     err, msg = subprocess.getstatusoutput('vcgencmd measure_temp')
@@ -54,15 +63,25 @@ def pushButton():
     time.sleep(0.5)
     servo.stop()
 
-zipLEDs = KitronikZIPLEDs(autoShow = False)
-
-r = 255
-g = 0
-b = 0
-# Set each pixel to red
-for i in range(3):
-    zipLEDs.setPixel(i, (r, g, b))
-zipLEDs.show()
+def toggleRelay():
+    global lightOn
+    global zipLEDs
+    gpio24 = KitronikGPIO(24) # Without PWM
+    if lightOn:
+        gpio24.turnOff()
+        r = 255
+        g = 0
+        b = 0
+        zipLEDs.setPixel(0, (r, g, b))
+        zipLEDs.show()
+    else:
+        gpio24.turnOn()
+        r = 0
+        g = 255
+        b = 0
+        zipLEDs.setPixel(0, (r, g, b))
+        zipLEDs.show()
+    lightOn = not lightOn
 
 
 def updateVals():
@@ -138,13 +157,9 @@ def activatesauna():
     return ""
 
 @app.get("/toggleoutdoorlight/")
-def togglelight():
+def toggleoutdoorlight():
     global lightOn
-    lightOn = not lightOn
-    if lightOn:
-        print("outdoor light turned off")
-    else:
-        print("outdoor light turned on")
+    toggleRelay()
     return str(lightOn)
 
 # https://flask-socketio.readthedocs.io/en/latest/getting_started.html#receiving-messages
