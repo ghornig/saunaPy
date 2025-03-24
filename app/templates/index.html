@@ -167,6 +167,14 @@
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
       <span class="fs-4">Sauna Pi</span>
     </a>
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <button onclick="toggleLight()" class="btn btn-bd-light mx-2" id="toggleLightCard">
+        <i class="bi-lightbulb" style="font-size: 2em; color: #868B94;"></i>
+      </button>
+      <button onclick="turnSaunaOn()" class="btn btn-bd-light mx-2">
+        <i class="bi-power" style="font-size: 2em; color: #868B94;"></i>
+      </button>
+    </div>
   </header>
 
   <main>
@@ -185,21 +193,21 @@
             <div class="d-flex flex-column text-center mt-5 mb-4">
               <h6 id="uppertemp" class="display-4 mb-0 font-weight-bold"> 13°C </h6>
               <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+                <div id="upperProgress" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="-20" aria-valuemax="100">13°C</div>
               </div>
               <span class="small" style="color: #868B94">Upper</span>
             </div>
             <div class="d-flex flex-column text-center mt-5 mb-4">
               <h6 id="lowertemp" class="display-4 mb-0"> 13°C </h6>
               <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+                <div id="lowerProgress" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
               </div>
               <span class="small" style="color: #868B94">Lower</span>
             </div>            
             <div class="d-flex flex-column text-center mt-5 mb-4">
               <h6 id="cputemp" class="display-4 mb-0"> 13°C </h6>
               <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
+                <div id="cpuProgress" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">13°C</div>
               </div>
               <span class="small" style="color: #868B94">CPU</span>
             </div>   
@@ -213,9 +221,6 @@
                   </span></div>
                 <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
                   </span></div> -->
-              </div>
-              <div>
-                <i class="bi-thermometer-half" style="font-size: 8em; color: #868B94;"></i>
               </div>
             </div>
     
@@ -231,15 +236,23 @@
           <div class="card-body p-4">
     
             <div class="d-flex">
-              <h6 class="flex-grow-1">Humidity</h6>
-              <h6>Lower</h6>
+              <h6 class="flex-grow-1">Other Info</h6>
+              <h6></h6>
             </div>
     
             <div class="d-flex flex-column text-center mt-5 mb-4">
               <h6 id="humidity"class="display-4 mb-0 font-weight-bold"> 5 % </h6>
-              <!-- <span class="small" style="color: #868B94">Stormy</span> -->
+              <span class="small" style="color: #868B94">Humidity</span>
             </div>
-    
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 id="pressure"class="display-4 mb-0 font-weight-bold"> 5 % </h6>
+              <span class="small" style="color: #868B94">Pressure</span>
+            </div>
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+              <h6 id="lowerec02"class="display-4 mb-0 font-weight-bold"> 5 % </h6>
+              <span class="small" style="color: #868B94">eCO2</span>
+            </div>            
+            
             <div class="d-flex align-items-center">
               <div class="flex-grow-1" style="font-size: 1rem;">
                 <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
@@ -249,9 +262,6 @@
                   </span></div>
                 <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
                   </span></div> -->
-              </div>
-              <div>
-                <i class="bi-droplet" style="font-size: 8em; color: #868B94;"></i>
               </div>
             </div>
     
@@ -261,160 +271,8 @@
     
       </div>
 
-      <div class="col-md-8 col-lg-6 col-xl-5">
-    
-        
-        <div class="card text-body" style=" border-radius: 35px;">
-          <button onclick="toggleLight()" type="button" class="btn">
-          <div class="card-body p-4">
-    
-            <div class="d-flex">
-              <!-- <h6 class="flex-grow-1">Pressure</h6> -->
-              <!-- <h6>Lower</h6> -->
-            </div>
-    
-            <div class="d-flex flex-column text-center mt-5 mb-4">
-              <h6 class="display-4 mb-0 font-weight-bold">Toggle Outdoor Light </h6>
-              <!-- <span class="small" style="color: #868B94">Lower</span> -->
-            </div>
-    
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1" style="font-size: 1rem;">
-                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
-                  </span>
-                </div>
-                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
-                  </span></div>
-                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
-                  </span></div> -->
-              </div>
-              <div>
-                <i class="bi-lightbulb" style="font-size: 8em; color: #868B94;"></i>
-              </div>
-            </div>
-    
-          </div>
-        </button>
-        </div>
-    
-      </div>
-
-      <div class="col-md-8 col-lg-6 col-xl-5">
-        <button onclick="turnSaunaOn()" type="button" class="btn">
-        <div class="card text-body" style=" border-radius: 35px;">
-          <div class="card-body p-4">
-    
-            <div class="d-flex">
-              <!-- <h6 class="flex-grow-1">Pressure</h6> -->
-              <!-- <h6>Lower</h6> -->
-            </div>
-    
-            <div class="d-flex flex-column text-center mt-5 mb-4">
-              <h6 class="display-4 mb-0 font-weight-bold">Press Power Switch</h6>
-              <!-- <span class="small" style="color: #868B94">Lower</span> -->
-            </div>
-    
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1" style="font-size: 1rem;">
-                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
-                  </span>
-                </div>
-                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
-                  </span></div>
-                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
-                  </span></div> -->
-              </div>
-              <div>
-                <i class="bi-power" style="font-size: 8em; color: #868B94;"></i>
-              </div>
-            </div>
-    
-          </div>
-        </div>
-        </button>
-    
-      </div>
-
-      <div class="col-md-8 col-lg-6 col-xl-5">
-    
-        <div class="card text-body" style=" border-radius: 35px;">
-          <div class="card-body p-4">
-    
-            <div class="d-flex">
-              <h6 class="flex-grow-1">eCO2</h6>
-              <h6>Lower</h6>
-            </div>
-    
-            <div class="d-flex flex-column text-center mt-5 mb-4">
-              <h6 id="lowerec02" class="display-4 mb-0 font-weight-bold"> 5 % </h6>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 5%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">5%</div>
-              </div>
-              <!-- <span class="small" style="color: #868B94">Stormy</span> -->
-            </div>
-    
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1" style="font-size: 1rem;">
-                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
-                  </span>
-                </div>
-                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
-                  </span></div>
-                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
-                  </span></div> -->
-              </div>
-              <div>
-                <i class="bi-wind" style="font-size: 8em; color: #868B94;"></i>
-              </div>
-            </div>
-    
-          </div>
-        </div>
-    
-      </div>
-
-      <div class="col-md-8 col-lg-6 col-xl-5">
-    
-        <div class="card text-body" style=" border-radius: 35px;">
-          <div class="card-body p-4">
-    
-            <div class="d-flex">
-              <h6 class="flex-grow-1">Pressure</h6>
-              <!-- <h6>Lower</h6> -->
-            </div>
-    
-            <div class="d-flex flex-column text-center mt-5 mb-4">
-              <h6 id="pressure" class="display-4 mb-0 font-weight-bold"> 5 % </h6>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 5%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">5%</div>
-              </div>
-              <span class="small" style="color: #868B94">Lower</span>
-            </div>
-    
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1" style="font-size: 1rem;">
-                <!-- <div><i class="bi-alarm" style="color: #868B94;"></i> <span class="ms-1"> 10 km/h
-                  </span>
-                </div>
-                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 84%
-                  </span></div>
-                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h
-                  </span></div> -->
-              </div>
-              <div>
-                <i class="bi-speedometer" style="font-size: 8em; color: #868B94;"></i>
-              </div>
-            </div>
-    
-          </div>
-        </div>
-    
-      </div>
     </div>
   </main>
-  <footer class="pt-5 my-5 text-body-secondary border-top">
-    Created by the Bootstrap team &middot; &copy; 2024
-  </footer>
 </div>
 <script src="../assets/dist/js/bootstrap.bundle.min.js">   
 </script>
@@ -425,6 +283,9 @@
            }).then((Response) => {
            Response.text().then((value) => {
                document.getElementById("cputemp").innerText = Number(value).toFixed(1) +" °C";
+              document.getElementById("cpuProgress").style.width = value + "%";
+              document.getElementById("cpuProgress").setAttribute("aria-valuenow", value);
+              document.getElementById("cpuProgress").innerText = Number(value).toFixed(1) + " °C";
            }).catch(() => {
                window.alert("fail on get status");
            })
@@ -436,6 +297,9 @@
            }).then((Response) => {
            Response.text().then((value) => {
                document.getElementById("uppertemp").innerText =  Number(value).toFixed(1) +" °C";
+              document.getElementById("upperProgress").style.width = value + "%";
+              document.getElementById("upperProgress").setAttribute("aria-valuenow", value);
+              document.getElementById("upperProgress").innerText = Number(value).toFixed(1) + " °C";
            }).catch(() => {
                window.alert("fail on get status");
            })
@@ -447,6 +311,9 @@
            }).then((Response) => {
            Response.text().then((value) => {
                document.getElementById("lowertemp").innerText = Number(value).toFixed(1) +" °C";
+              document.getElementById("lowerProgress").style.width = value + "%";
+              document.getElementById("lowerProgress").setAttribute("aria-valuenow", value);
+              document.getElementById("lowerProgress").innerText = Number(value).toFixed(1) + " °C";
            }).catch(() => {
                window.alert("fail on get status");
            })
@@ -486,6 +353,23 @@
            })
        }
 
+       function getOutdoorLightStatus(){
+           fetch("/outdoorlightstatus",{
+           method:"GET"
+           }).then((Response) => {
+           Response.text().then((value) => {
+               const toggleLightCard = document.getElementById("toggleLightCard");
+               if (value === "True") {
+                 toggleLightCard.style.backgroundColor = "green";
+               } else if (value === "False") {
+                 toggleLightCard.style.backgroundColor = "red";
+               }
+           }).catch(() => {
+               window.alert("fail on get status");
+           })
+           })
+       }
+
        // Call getStatus on a 1 second timer
        setInterval(getCPUTemp, 1000);
        setInterval(getUpperTemp, 1000);
@@ -493,6 +377,7 @@
        setInterval(getLowerHumidity, 1000);
        setInterval(getLowereC02, 1000);
        setInterval(getLowerPressure, 1000);
+       setInterval(getOutdoorLightStatus, 1000);
 
 
        function turnSaunaOn(){
@@ -506,7 +391,12 @@
            method:"GET"
            }).then((Response) => {
            Response.text().then((value) => {
-               document.getElementById("light").innerText = "light status " + value;
+                 const toggleLightCard = document.getElementById("toggleLightCard");
+                 if (value === "True") {
+                   toggleLightCard.style.backgroundColor = "green";
+                 } else if (value === "False") {
+                   toggleLightCard.style.backgroundColor = "red";
+                 }
            }).catch(() => {
                window.alert("fail on get status");
            })

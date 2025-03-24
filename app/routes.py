@@ -45,7 +45,20 @@ uppertemp = 0
 hum = 0
 ec02 = 0
 pressure = 0
-lightOn = False
+adcReading = 0
+latestMessage = "Hi!"
+lightOn = True
+gpioLightOut = KitronikGPIO(24, isPWM = False) # Without PWM
+gpioLightOut.turnOn()
+
+oled = KitronikOLED()
+oled.displayText("Hello dev :)", 1)
+# Update the OLED display with the changes
+oled.show()
+
+bme688 = KitronikBME688()
+bme688.calcBaselines(oled) # Takes OLED as input to show progress
+
 # https://stackoverflow.com/questions/70796161/countdown-timer-how-to-update-variable-in-python-flask-with-html
 
 
@@ -66,60 +79,119 @@ def pushButton():
 def toggleRelay():
     global lightOn
     global zipLEDs
-    gpio24 = KitronikGPIO(24) # Without PWM
+    global gpioLightOut    
     if lightOn:
-        gpio24.turnOff()
-        r = 255
-        g = 0
-        b = 0
-        zipLEDs.setPixel(0, (r, g, b))
-        zipLEDs.show()
-    else:
-        gpio24.turnOn()
+        gpioLightOut.turnOn()
         r = 0
         g = 255
+        b = 0
+        zipLEDs.setPixel(0, (r, g, b))
+        zipLEDs.show()    
+    else:
+        gpioLightOut.turnOff()
+        r = 255
+        g = 0
         b = 0
         zipLEDs.setPixel(0, (r, g, b))
         zipLEDs.show()
     lightOn = not lightOn
 
 
-def updateVals():
-    oled = KitronikOLED()
-    oled.displayText("Hello dev :)", 1)
-    # Update the OLED display with the changes
-    oled.show()
+def screenUpdater():
+    global lowertemp, uppertemp, hum, ec02, pressure, latestMessage, oled
 
-    bme688 = KitronikBME688()
-    bme688.calcBaselines(oled) # Takes OLED as input to show progress
+    while True:
+        # Screen one: env data
+        try:
+            oled.clear()
+            # Read and output the sensor values to the OLED display
+            oled.displayText("Temperature:" + str(lowertemp), 1)
+            oled.displayText("Pressure:" + str(pressure), 2)
+            oled.displayText("Humidity:"+  str(hum), 3)
+            oled.displayText("eCO2:" + str(ec02), 4)
+            oled.displayText("ADC Reading:" + str(adcReading), 5)
+            oled.displayText("Upper Temp:" + str(uppertemp), 6)        
+
+            oled.show()
+
+            time.sleep(3)
+        except:
+            print("Error updating screen 1")
+            pass
+        
+        # Screen two: technical info
+        try:
+            oled.clear()
+            ssid = subprocess.check_output('iwgetid -r', shell=True).decode('utf-8').strip()
+            # Read wifi signal
+            wifiSignal = subprocess.check_output('iwconfig wlan0 | grep Signal', shell=True)
+            # write link quality and signal level to two oled displaytext lines
+            wifiSignal = wifiSignal.decode('utf-8').strip()
+            match = re.search(r'Link Quality=(\d+/\d+)\s+Signal level=(-\d+ dBm)', wifiSignal)
+            if match:
+                link_quality = match.group(1)
+                signal_level = match.group(2)
+                oled.displayText("SSID:" + ssid, 1)
+                oled.displayText("Link Quality:" + link_quality, 2)
+                oled.displayText("Signal Level:" + signal_level, 3)
+
+            oled.displayText(latestMessage, 4)
+
+            oled.show()        
+            time.sleep(3)
+        except:
+            print("Error updating screen 2")
+            pass
+
+
+def updateVals():
+
 
     adc1 = KitronikADC(1)
 
     while True:
-        global lowertemp, uppertemp, hum, ec02, pressure
-        bme688.measureData()
-        uppertemp = float(adcToTemp(adc1.read()))
-        lowertemp = float(bme688.readTemperature())
-        # Update the sensor values
-        hum = float(bme688.readHumidity())
-        oled.clear()
-        ec02 =  float(bme688.readeCO2())
-        pressure = float(bme688.readPressure())
-        oled.clear()
-        # Read and output the sensor values to the OLED display
-        oled.displayText("Temperature:" + str(bme688.readTemperature()), 1)
-        oled.displayText("Pressure:" + str(bme688.readPressure()), 2)
-        oled.displayText("Humidity:"+  str(bme688.readHumidity()), 3)
-        oled.displayText("eCO2:" + str(bme688.readeCO2()), 4)
-        oled.displayText("Air Quality %:" + str(bme688.getAirQualityPercent()), 5)
-        oled.displayText("Air Quality Score:" + str(bme688.getAirQualityScore()), 6)
-        oled.show()
+        try:
+            global lowertemp, uppertemp, hum, ec02, pressure, adcReading, bme688, zipLEDs
+            bme688.measureData()
+            adcReading = adc1.read()
+            # uppertemp = float(adcToTemp(adcReading))
+            uppertemp = float((adcReading))
+            lowertemp = float(bme688.readTemperature())
+            # Update the sensor values
+            hum = float(bme688.readHumidity())
+            oled.clear()
+            ec02 =  float(bme688.readeCO2())
+            pressure = float(bme688.readPressure())
 
+            isRemoteUser = False
+            who_output = subprocess.check_output('pgrep -ai sshd', shell=True).decode('utf-8').strip()
+            if "sshd: gjh" in who_output:
+                isRemoteUser = True
+
+            if isRemoteUser:
+                r = 0
+                g = 0
+                b = 255
+                zipLEDs.setPixel(2, (r, g, b))
+                zipLEDs.show()
+            else:
+                r = 0
+                g = 0
+                b = 0
+                zipLEDs.setPixel(2, (r, g, b))
+                zipLEDs.show()
+        except:
+            print("Error updating values")
+            pass
         time.sleep(1)
 
 t1 = threading.Thread(target=updateVals)
 t1.daemon = True
 t1.start()
+
+t2 = threading.Thread(target=screenUpdater)
+t2.daemon = True
+t2.start()
 
 @app.get("/cputemperature/")
 def cputemp():
@@ -160,6 +232,11 @@ def activatesauna():
 def toggleoutdoorlight():
     global lightOn
     toggleRelay()
+    return str(lightOn)
+
+@app.get('/outdoorlightstatus/')
+def outdoorlightstatus():
+    global lightOn
     return str(lightOn)
 
 # https://flask-socketio.readthedocs.io/en/latest/getting_started.html#receiving-messages
