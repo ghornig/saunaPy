@@ -4,17 +4,25 @@ import time
 import random
 import threading
 from KitronikAirQualityControlHAT import *
+import RPi.GPIO as GPIO
 
 import re, subprocess
  
 zipLEDs = KitronikZIPLEDs(autoShow = False)
 
-r = 255
-g = 0
-b = 0
-zipLEDs.setPixel(0, (r, g, b))
-zipLEDs.show()
+try:
+    r = 255
+    g = 0
+    b = 0
+    zipLEDs.setPixel(0, (r, g, b))
+    zipLEDs.show()
+except:
+    pass
 
+externalSwitchPin = 23
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(externalSwitchPin, GPIO.IN)
 
 def check_CPU_temp():
     temp = None
@@ -82,18 +90,24 @@ def toggleRelay():
     global gpioLightOut    
     if lightOn:
         gpioLightOut.turnOn()
-        r = 0
-        g = 255
-        b = 0
-        zipLEDs.setPixel(0, (r, g, b))
-        zipLEDs.show()    
-    else:
+        try:
+            r = 0
+            g = 255
+            b = 0
+            zipLEDs.setPixel(0, (r, g, b))
+            zipLEDs.show()    
+        except:
+            pass
+    else:        
         gpioLightOut.turnOff()
-        r = 255
-        g = 0
-        b = 0
-        zipLEDs.setPixel(0, (r, g, b))
-        zipLEDs.show()
+        try:
+            r = 255
+            g = 0
+            b = 0
+            zipLEDs.setPixel(0, (r, g, b))
+            zipLEDs.show()
+        except:
+            pass
     lightOn = not lightOn
 
 
@@ -146,7 +160,6 @@ def screenUpdater():
 
 def updateVals():
 
-
     adc1 = KitronikADC(1)
 
     while True:
@@ -169,21 +182,46 @@ def updateVals():
                 isRemoteUser = True
 
             if isRemoteUser:
-                r = 0
-                g = 0
-                b = 255
-                zipLEDs.setPixel(2, (r, g, b))
-                zipLEDs.show()
+                try:
+                    r = 0
+                    g = 0
+                    b = 255
+                    zipLEDs.setPixel(2, (r, g, b))
+                    zipLEDs.show()
+                except:
+                    pass
             else:
-                r = 0
-                g = 0
-                b = 0
-                zipLEDs.setPixel(2, (r, g, b))
-                zipLEDs.show()
+                try:
+                    r = 0
+                    g = 0
+                    b = 0
+                    zipLEDs.setPixel(2, (r, g, b))
+                    zipLEDs.show()
+                except:
+                    pass
         except:
             print("Error updating values")
             pass
         time.sleep(1)
+
+def externalSwitchMonitor():
+
+    externalSwitchState = GPIO.input(externalSwitchPin)
+    debounce = False
+
+    while True:
+        if debounce:
+            time.sleep(1)
+        time.sleep(0.2)
+
+        switchStateNow = GPIO.input(externalSwitchPin)
+
+        # On toggle
+        if (switchStateNow != externalSwitchState):
+            toggleRelay()
+            externalSwitchState = switchStateNow
+            debounce = True
+
 
 t1 = threading.Thread(target=updateVals)
 t1.daemon = True
@@ -192,6 +230,10 @@ t1.start()
 t2 = threading.Thread(target=screenUpdater)
 t2.daemon = True
 t2.start()
+
+t3 = threading.Thread(target=externalSwitchMonitor)
+t3.daemon = True
+t3.start()
 
 @app.get("/cputemperature/")
 def cputemp():
