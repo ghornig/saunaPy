@@ -36,8 +36,8 @@ def check_CPU_temp():
     return temp
 
 def adcToTemp(adcReading):
-    alpha = 0.6697 #offset
-    beta = -560.2 #slope
+    alpha = -0.4082
+    beta = 407.4
     return alpha*adcReading + beta
 
 lowertemp = 0
