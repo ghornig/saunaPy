@@ -22,7 +22,7 @@ except:
 externalSwitchPin = 23
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(externalSwitchPin, GPIO.IN)
+GPIO.setup(externalSwitchPin, GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 def check_CPU_temp():
     temp = None
@@ -36,18 +36,10 @@ def check_CPU_temp():
     return temp
 
 def adcToTemp(adcReading):
-    adcMax = 4095
-    voltageMax = 3.3
-    resistance = 12000
-    alpha = 28095 #offset
-    beta = 395 #slope
-    gamma = 128549946
-    delta = -2.48798
+    alpha = 0.6697 #offset
+    beta = -560.2 #slope
+    return alpha*adcReading + beta
 
-    vmeas = (adcReading/adcMax)*voltageMax
-    # return ((resistance /((voltageMax/vmeas) - 1)) - alpha) / beta
-    return math.pow(math.log(((resistance /((voltageMax/vmeas) - 1))) / gamma) / delta, 10)
-    # return vmeas
 lowertemp = 0
 uppertemp = 0
 hum = 0
@@ -168,7 +160,11 @@ def updateVals():
             bme688.measureData()
             adcReading = adc1.read()
             # uppertemp = float(adcToTemp(adcReading))
-            uppertemp = float((adcReading))
+            # ADC is noisy and should be read a few times
+            for i in range(10):
+                adcReading += adc1.read()
+            adcReading = adcReading / 10
+            uppertemp = float(adcToTemp(adcReading))
             lowertemp = float(bme688.readTemperature())
             # Update the sensor values
             hum = float(bme688.readHumidity())
@@ -280,6 +276,11 @@ def toggleoutdoorlight():
 def outdoorlightstatus():
     global lightOn
     return str(lightOn)
+
+@app.get('/adcraw/')
+def getADCReading():
+    global adcReading
+    return str(adcReading)
 
 # https://flask-socketio.readthedocs.io/en/latest/getting_started.html#receiving-messages
 @socketio.on('message')
